@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pandas
-import numpy
 
 
 file = 'titanic.csv'
@@ -42,7 +41,7 @@ def part_of_survived(col):
     for i in col:
         if i == 1:
             count_of_survs += 1
-    print('part of survived', round(
+    print('part of survived:', round(
         count_of_survs / count_of_victims * 100, 2), '%')
 
 
@@ -66,7 +65,7 @@ def counts_of_age(col):
             total_age += i
     age_lst = col.dropna().tolist()
     age_lst.sort()
-    print('half of age', round(total_age / (count_of_victims - count_nan)))
+    print('average age:', round(total_age / (count_of_victims - count_nan)))
     if (len(age_lst) % 2) == 0:
         median = (age_lst[int(len(age_lst) / 2)] +
                   age_lst[int(len(age_lst) / 2) + 1]) / 2
@@ -76,7 +75,26 @@ def counts_of_age(col):
 
 
 def correlatton_of_pierse(col1, col2):
-    pass
+    total_x, total_y, total_dx2, total_dy2, total_mul_dx_dy = 0, 0, 0, 0, 0
+    d_x, d_y, d_x_2, d_y_2 = [], [], [], []
+    for i in col1:
+        total_x += i
+    for i in col2:
+        total_y += i
+    mx = total_x / len(col1)
+    my = total_y / len(col2)
+    for i in col1:
+        d_x.append(i - mx)
+        d_x_2.append((i - mx)**2)
+        total_dx2 += ((i - mx)**2)
+    for i in col2:
+        d_y.append(i - my)
+        d_y_2.append((i - my)**2)
+        total_dy2 += ((i - my)**2)
+    for i in range(len(d_x)):
+        total_mul_dx_dy += (d_x[i] * d_y[i])
+    rxy = total_mul_dx_dy / (total_dx2 * total_dy2)**0.5
+    print('correlation of pierse', round(rxy, 2))
 
 
 def dic_sort(dic):
@@ -97,7 +115,6 @@ def adding_to_dic(dic, name):
         count = dic.get(name)
         count += 1
         dic.update({name: count})
-     # return dic
 
 
 def max_value_of_dic(dic):
@@ -109,7 +126,6 @@ def max_value_of_dic(dic):
 
 
 def what_is_popular_name(col1, col2):
-    dic_of_man_names = {}
     dic_of_women_names = {}
     count = 0
     for k, i in enumerate(col1):
