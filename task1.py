@@ -9,7 +9,15 @@ global count_of_victims
 
 
 def parse_name(row):
-    if 'Mrs.' in row.split()[2] or 'Miss.' in row.split()[2]:
+    if '(' in row:
+        name = row.split('(')[1]
+        if 'Mrs.' in row.split()[2] or 'Miss.' in row.split()[2]:
+            name = row.split()[1]
+        name = name.split()[0]
+        name = name.strip('"()')
+
+        # print(name)
+    elif 'Mrs.' in row.split()[2] or 'Miss.' in row.split()[2]:
         name = row.split()[3]
     elif 'Mr.' in row.split()[2]:
         name = row.split()[3]
@@ -151,8 +159,9 @@ def analyze_em(data):
 
 
 def main():
-    date = parse_date(file, file_col)
-    analyze_em(date)
+    data = parse_date(file, file_col)
+    analyze_em(data)
+
 
 if __name__ == '__main__':
     main()
